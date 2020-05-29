@@ -16,25 +16,21 @@
  * Adds a random greeting to the page.
  */
 
-var used_greetings = [];
-var greetings =
+var all_greetings =
       ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!', 'Hallo Welt!', 'こんにちは世界', '안녕하세요 세계!', 'Привет мир!'];
+var active_greetings = all_greetings.slice();
 
 function addRandomGreeting() {
   // Pick a random greeting.
-  let greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add selected greeting to list of used greetings.
-  used_greetings.push(greeting);
+  const greeting = active_greetings[Math.floor(Math.random() * active_greetings.length)];
 
   // Add it to the page.
-  let greetingContainer = document.getElementById('greeting-container');
+  const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 
   // Prevent repeats before all messages are seen once.
-  greetings.splice(greetings.indexOf(greeting), 1);
-  if (greetings.length == 0) {
-      greetings = used_greetings;
-      used_greetings = [];
+  active_greetings.splice(active_greetings.indexOf(greeting), 1);
+  if (active_greetings.length == 0) {
+      active_greetings = all_greetings.slice();
   }
 }
