@@ -8,7 +8,7 @@ body {
   width: 650px;
 }
 
-#greeting-container {
+#greeting-container, #fetch-container {
   margin-top: 20px;
 }
 
