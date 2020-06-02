@@ -15,12 +15,20 @@
         <img id = "profile_pic" alt = "Photo of Maxwell" src = "/images/Maxwell.jpg">
         <p id = "msg" >Hey! I'm Maxwell and I'm a rising junior at UC Berkeley studying Computer Science and Bioengineering. I love music, cooking, and teaching!</p>
       </div>
+
       <p>Click here to get a random greeting from around the world!:</p>
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="greeting-container"></div>
+      
       <p>Click here to say hello!:</p>
-      <button onclick="fetchMessage()">Say Hello to Maxwell:</button>
+      <button onclick="fetchMessage()">Fetch Message:</button>
       <div id="fetch-container"></div>
+
+      <p>Click here to get comments:</p>
+      <button onclick="fetchJson()">Fetch Json:</button>
+      <div class = "json-container", id="json-container-0"></div>
+      <div class = "json-container", id="json-container-1"></div>
+      <div class = "json-container", id="json-container-2"></div>
     </div>
   </body>
 </html>

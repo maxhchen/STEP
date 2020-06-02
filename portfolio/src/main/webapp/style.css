@@ -8,7 +8,7 @@ body {
   width: 650px;
 }
 
-#greeting-container, #fetch-container {
+#greeting-container, #fetch-container, .json-container {
   margin-top: 20px;
 }
 

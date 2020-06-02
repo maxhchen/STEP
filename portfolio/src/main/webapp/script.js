@@ -35,8 +35,20 @@ function addRandomGreeting() {
   }
 }
 
+// Fetch text from /data URL.
 function fetchMessage() {
   fetch("/data").then(response => response.text()).then((quote) => {
     document.getElementById('fetch-container').innerText = quote;
+    document.getElementById('fetch-container').style.border = "thin solid black";
+  });
+}
+
+// Fetch JSON from /data URL and parse it into individual comments.
+function fetchJson() {
+    fetch("/data").then(response => response.json()).then((msgs) => {
+        for (var i = 0; i < msgs.length; i++) {
+            document.getElementById('json-container-' + i).innerText = msgs[i];
+            document.getElementById('json-container-' + i).style.border = "thin solid black";
+        }
   });
 }
