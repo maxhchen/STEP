@@ -34,3 +34,9 @@ function addRandomGreeting() {
       active_greetings = all_greetings.slice();
   }
 }
+
+function fetchMessage() {
+  fetch("/data").then(response => response.text()).then((quote) => {
+    document.getElementById('fetch-container').innerText = quote;
+  });
+}
