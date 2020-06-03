@@ -29,7 +29,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ArrayList<String> msgs = new ArrayList<String>();
+    List msgs = new ArrayList<>();
     msgs.add("The Fellowship of the Ring");
     msgs.add("The Two Towers");
     msgs.add("The Return of the King");
@@ -40,8 +40,8 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  // Convert ArrayList to JSON using Gson library.
-  private String convertToJson(ArrayList<String> msgs) {
+  // Convert List to JSON using Gson library.
+  private String convertToJson(List msgs) {
     Gson gson = new Gson();
     String json = gson.toJson(msgs);
     return json;
