@@ -37,7 +37,7 @@ function addRandomGreeting() {
 
 // Fetch text from /data URL.
 function fetchMessage() {
-  fetch("/data").then(response => response.text()).then((quote) => {
+  fetch("/data").then(response => response.text()).then(quote => {
     document.getElementById('fetch-container').innerText = quote;
   });
 }
