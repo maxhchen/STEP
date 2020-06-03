@@ -35,8 +35,22 @@ function addRandomGreeting() {
   }
 }
 
+// Fetch text from /data URL.
 function fetchMessage() {
-  fetch("/data").then(response => response.text()).then((quote) => {
+  fetch("/data").then(response => response.text()).then(quote => {
     document.getElementById('fetch-container').innerText = quote;
+  });
+}
+
+// Fetch JSON from /data URL and parse it into individual comments.
+function fetchJson() {
+    fetch("/data").then(response => response.json()).then(msgs => {
+        let json_container = document.getElementById('json-container');
+        for (var i = 0; i < msgs.length; i++) {
+            let json_item = document.createElement("div");
+            json_item.className = "json-item";
+            json_item.innerText = msgs[i];
+            json_container.appendChild(json_item);
+        }
   });
 }

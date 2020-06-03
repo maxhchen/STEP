@@ -8,8 +8,12 @@ body {
   width: 650px;
 }
 
-#greeting-container, #fetch-container {
+#greeting-container, #fetch-container, #json-container, .json-item {
   margin-top: 20px;
+}
+
+.json-item {
+    border: thin solid black;
 }
 
 #profile_pic {
