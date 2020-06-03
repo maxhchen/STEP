@@ -26,15 +26,11 @@ import java.util.*;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+    List<String> comments = new ArrayList<>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    List<String> msgs = new ArrayList<>();
-    msgs.add("The Fellowship of the Ring");
-    msgs.add("The Two Towers");
-    msgs.add("The Return of the King");
-
-    String json = convertToJson(msgs);
+    String json = convertToJson(comments);
 
     response.setContentType("application/json;");
     response.getWriter().println(json);
@@ -45,5 +41,22 @@ public class DataServlet extends HttpServlet {
     Gson gson = new Gson();
     String json = gson.toJson(msgs);
     return json;
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String newComment = getComment(request);
+    if (newComment != null) {
+        comments.add(newComment);
+    }
+
+    response.sendRedirect("/index.html");
+  }
+ 
+ // Extracts comment text from request and returns it.
+  private String getComment(HttpServletRequest request) {
+    String newComment = request.getParameter("comment");
+    // Add handling for newComment = null?
+    return newComment;
   }
 }
