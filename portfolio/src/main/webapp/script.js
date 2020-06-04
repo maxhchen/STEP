@@ -47,7 +47,7 @@ function loadComments() {
   fetch('/data').then(response => response.json()).then(allComments => {
     const commentContainer = document.getElementById('comment-container');
     allComments.forEach(commentText => {
-      const commentItem = createCommentItem(commentText);
+      const commentItem = createCommentItem(commentText.text);
       commentContainer.appendChild(commentItem);
     });
   });
