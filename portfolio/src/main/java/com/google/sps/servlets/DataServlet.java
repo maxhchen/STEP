@@ -34,7 +34,7 @@ import java.util.*;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    // Private class to represent comments in Datastore.
+    // Private class to represent comments as objects in Datastore.
     private class Comment {
         private long id;
         private String text;
@@ -47,7 +47,6 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // String json = convertToJson(comments);
     Query query = new Query("Comment");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
