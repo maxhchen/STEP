@@ -8,11 +8,11 @@ body {
   width: 650px;
 }
 
-#greeting-container, #fetch-container, #json-container, .json-item {
+#greeting-container, #fetch-container, #comment-container, .comment-item {
   margin-top: 20px;
 }
 
-.json-item {
+.comment-item {
     border: thin solid black;
 }
 

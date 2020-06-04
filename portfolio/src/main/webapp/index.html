@@ -8,7 +8,8 @@
     <script src="script.js"></script>
   </head>
 
-  <body>
+<!-- Whenever the HTML loads, renders all existing comments. -->
+  <body onload="loadComments()">
     <div id="content">
       <h1>Maxwell's Portfolio</h1>
       <div id = "hero">
@@ -24,9 +25,15 @@
       <button onclick="fetchMessage()">Fetch Message:</button>
       <div id="fetch-container"></div>
 
-      <p>Click here to get Lord of the Rings titles:</p>
-      <button onclick="fetchJson()">Fetch titles:</button>
-      <div id = "json-container"></div>
+      <form action="/data" method="POST">
+        <label for="comment">Enter a Comment:</label>
+        <input type="text" id = "comment" name = "comment">
+        <br/><br/>
+        <input type="submit" />
+      </form>
+ 
+      <ul id="comment-container"></ul>
+
     </div>
   </body>
 </html>

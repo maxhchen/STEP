@@ -42,15 +42,21 @@ function fetchMessage() {
   });
 }
 
-// Fetch JSON from /data URL and parse it into individual comments.
-function fetchJson() {
-    fetch("/data").then(response => response.json()).then(msgs => {
-        let json_container = document.getElementById('json-container');
-        for (var i = 0; i < msgs.length; i++) {
-            let json_item = document.createElement("div");
-            json_item.className = "json-item";
-            json_item.innerText = msgs[i];
-            json_container.appendChild(json_item);
-        }
+// Gets the list of all existing comments and displays them.
+function loadComments() {
+  fetch('/data').then(response => response.json()).then(allComments => {
+    const commentContainer = document.getElementById('comment-container');
+    allComments.forEach(commentText => {
+      const commentItem = createCommentItem(commentText.text);
+      commentContainer.appendChild(commentItem);
+    });
   });
+}
+
+// Helper function to instantiate each comment.
+function createCommentItem(text) {
+  const commentItem = document.createElement('div');
+  commentItem.innerText = text;
+  commentItem.className = "comment-item";
+  return commentItem;
 }
