@@ -35,28 +35,32 @@ function addRandomGreeting() {
   }
 }
 
-// Fetch text from /data URL.
-function fetchMessage() {
-  fetch("/data").then(response => response.text()).then(quote => {
-    document.getElementById('fetch-container').innerText = quote;
-  });
+// Parses URL to determine number of comments to display.
+function loadCommentsOnStart() {
+  let commentLimit = (new URL(document.location)).searchParams.get('commentLimit');
+  loadComments(commentLimit);
 }
 
-// Gets the list of all existing comments and displays them.
-function loadComments() {
-  fetch('/data').then(response => response.json()).then(allComments => {
+// Load `commentLimit` comments.
+function loadComments(commentLimit) {
+    const URL = '/data?commentLimit=' + commentLimit;
+    fetch(URL).then(response => response.json()).then(allComments => {
     const commentContainer = document.getElementById('comment-container');
+
+    // Prevent visual "glitch" when comments show up twice.
+    commentContainer.innerHTML = "";
+
     allComments.forEach(commentText => {
-      const commentItem = createCommentItem(commentText.text, commentText.time);
+      const commentItem = createCommentItem(commentText.text, commentText.timestamp);
       commentContainer.appendChild(commentItem);
     });
   });
 }
 
 // Helper function to instantiate each comment.
-function createCommentItem(text, time) {
+function createCommentItem(text, timestamp) {
   const commentItem = document.createElement('div');
-  commentItem.innerText = "\"" + text + "\" sent at " + time;
+  commentItem.innerText = "\"" + text + "\" sent on " + timestamp;
   commentItem.className = "comment-item";
   return commentItem;
 }

@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.sps.classes.Comment;
 import com.google.gson.Gson;
 import java.util.*;
 
@@ -35,23 +36,9 @@ import java.util.*;
 /** Servlet that deletes comments.*/
 @WebServlet("/delete-data")
 public class DeleteDataServlet extends HttpServlet {
-
-    // Private class to represent comments as objects in Datastore.
-    private class Comment {
-        private long id;
-        private String text;
-        private long time;
-
-        public Comment(long id, String text, long time) {
-            this.id = id;
-            this.text = text;
-            this.time = time;
-        }
-    }
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("time", SortDirection.DESCENDING);
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery loadedComments = datastore.prepare(query);
 
