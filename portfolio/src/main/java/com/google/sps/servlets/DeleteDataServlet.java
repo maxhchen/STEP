@@ -32,9 +32,9 @@ import com.google.gson.Gson;
 import java.util.*;
 
 
-/** Servlet that returns user comments. */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
+/** Servlet that deletes comments.*/
+@WebServlet("/delete-data")
+public class DeleteDataServlet extends HttpServlet {
 
     // Private class to represent comments as objects in Datastore.
     private class Comment {
@@ -50,53 +50,14 @@ public class DataServlet extends HttpServlet {
     }
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Comment").addSort("time", SortDirection.DESCENDING);
-
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery loadedComments = datastore.prepare(query);
 
-    List<Comment> comments = new ArrayList<>();
     for (Entity entity : loadedComments.asIterable()) {
-      long id = entity.getKey().getId();
-      String text = (String) entity.getProperty("text");
-      long time = (long) entity.getProperty("time");
-
-
-      Comment comment = new Comment(id, text, time);
-      comments.add(comment);
+        datastore.delete(entity.getKey());
     }
-
-    String json = convertToJson(comments);
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
-  }
-
-  // Convert List to JSON using Gson library.
-  private String convertToJson(List<Comment> msgs) {
-    Gson gson = new Gson();
-    String json = gson.toJson(msgs);
-    return json;
-  }
-
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String newComment = getComment(request);
-    if (newComment != null) {
-        Entity commentEntity = new Entity("Comment");
-        commentEntity.setProperty("text", newComment);
-        commentEntity.setProperty("time", System.currentTimeMillis());
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        datastore.put(commentEntity);
-    }
-
     response.sendRedirect("/index.html");
-  }
- 
- // Extracts comment text from request and returns it.
-  private String getComment(HttpServletRequest request) {
-    String newComment = request.getParameter("comment");
-    // Add handling for newComment = null?
-    return newComment;
   }
 }

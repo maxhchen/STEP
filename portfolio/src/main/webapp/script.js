@@ -47,16 +47,16 @@ function loadComments() {
   fetch('/data').then(response => response.json()).then(allComments => {
     const commentContainer = document.getElementById('comment-container');
     allComments.forEach(commentText => {
-      const commentItem = createCommentItem(commentText.text);
+      const commentItem = createCommentItem(commentText.text, commentText.time);
       commentContainer.appendChild(commentItem);
     });
   });
 }
 
 // Helper function to instantiate each comment.
-function createCommentItem(text) {
+function createCommentItem(text, time) {
   const commentItem = document.createElement('div');
-  commentItem.innerText = text;
+  commentItem.innerText = "\"" + text + "\" sent at " + time;
   commentItem.className = "comment-item";
   return commentItem;
 }
