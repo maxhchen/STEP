@@ -98,11 +98,18 @@ public class DataServlet extends HttpServlet {
   private int getNumberOfCommentsToDisplay(HttpServletRequest request) {
     String requestValue = request.getParameter("commentLimit");
     int numComments;
+
+    // Null or empty check.
+    if (requestValue == null || requestValue.isEmpty()) {
+      numComments = loadedComments.countEntities();
+      return numComments;
+    }
     
     // Parse `commentLimit` as a number, otherwise default to number of comments in Datastore.
     try {
         numComments = Integer.parseInt(requestValue);
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
+        System.err.println("Cannot parse user-defined comment limit; default to maximum.");
         numComments = loadedComments.countEntities();
     }
 

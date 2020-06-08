@@ -64,3 +64,18 @@ function createCommentItem(text, timestamp) {
   commentItem.className = "comment-item";
   return commentItem;
 }
+
+// const commentItem = document.createElement('div');
+//   commentItem.className = "comment-item";
+//   
+//   const commentText = document.createElement('div');
+//   commentText.innerText = text;
+//   commentText.className = "comment-text";
+//   
+//   const commentTimestamp = document.createElement('div');
+//   commentTimestamp.innerText = timestamp;
+//   commentTimestamp.className = "comment-timestamp";
+//   
+//   commentItem.appendChild(commentText);
+//   commentItem.appendChild(CommentTimestamp);
+//   return commentItem;

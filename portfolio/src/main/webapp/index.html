@@ -11,35 +11,94 @@
 <!-- Whenever the HTML loads, renders all existing comments. -->
   <body onload="loadCommentsOnStart()">
     <div id="content">
-      <h1>Maxwell's Portfolio</h1>
-      <div id = "hero">
-        <img id = "profile_pic" alt = "Photo of Maxwell" src = "/images/Maxwell.jpg">
-        <p id = "msg" >Hey! I'm Maxwell and I'm a rising junior at UC Berkeley studying Computer Science and Bioengineering. I love music, cooking, and teaching!</p>
+      
+      <div id = "hero-section">
+          <div id = "hero-text">
+              <h1> 👋 Hi! I'm <span class = "accent">Maxwell</span>. </h1>
+              <p id = "msg"> I'm a rising junior at UC Berkeley studying <span class = "accent">Computer Science and Bioengineering</span>. I love music, cooking, and teaching!</p>
+          </div>
+          <div id = "hero-img">
+            <img id = "profile-pic" alt = "Photo of Maxwell" src = "/images/Maxwell.jpg">
+          </div>
       </div>
 
-      <p>Click here to get a random greeting from around the world!:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+      <div id = "one-page">
+        <div id = "greeting-section" class = "panel">
+            <p id = "greeting-text"> Click here to get a random greeting from around the world! </p>
+            <button id = "greeting-button" onclick="addRandomGreeting()"> Hello </button>
+            <div id="greeting-container"> </div>
+        </div>
 
-      <form action="/data" method="POST">
-        <label for="comment">Enter a Comment:</label>
-        <input type="text" id = "comment" name = "comment">
-        <br/><br/>
-        <input type="submit" />
-      </form>
+        <div id = "education-section" class = "panel">
+            <div id = "school">
+                <ul> <p class = "title"> University of California, Berkeley </p>
+                    <li> Computer Science B.A. </li>
+                    <li> Bioengineering minor </li>
+                    <li> Concentration in Computational Neuroscience</li>
+                    </li>
+                </ul>
+            </div>
+
+            <div id = "coursework">
+                <ul> <p class = "title"> Coursework </p>
+                    <li> Data Structures and Algorithms </li>
+                    <li> Machine Architecture </li>
+                    <li> Operating Systems and Systems Programming </li>
+                    <li> Discrete Mathematics and Probability Theory </li>
+                    <li> Advanced Probability and Random Processes </li>
+                    <li> Signals and Systems </li>
+                    <li> Teaching Techniques for Computer Science </li>
+                </ul>
+            </div>
       
-      <form>
-        <label for="comment">Select number of comments to display:</label>
-        <input type="number" name = "commentLimit" id = "commentLimit" min = "0" max = "100">
-        <br/><br/>
-        <input type="submit" onClick="loadComments(document.getElementById('commentLimit').value)"/>
-      </form>
+        </div>
 
-      <form action="/delete-data" method="POST">
-        <button name="delete" value="delete"> Delete all Comments </button>
-      </form>
+        <div id = "activities-section" class = "panel">
+            <div id = "TA" class = "activity">
+                <ul> <p class = "title">TA for EECS 16B </p>
+                    <li> Manage logistics for assignments, exams, discussions, and grading for 500 students. Teach 20-30 students twice a week. </li>
+                </ul>
+            </div>
+            <div id = "research" class = "activity">
+                <ul> <p class = "title"> Undergraduate Student Researcher </p>
+                    <li> Develop software for biophysical simulations and predicting properties of neurons. </li>
+                </ul>
+            </div>
+            <div id = "csm" class = "activity">
+                <ul> <p class = "title"> CSM Senior Mentor </p>
+                    <li> Help junior mentors develop pedagogy and strengthen content knowledge. </li>
+                </ul>
+            </div>
+            <div id = "web" class = "activity">
+                <ul> <p class = "title"> Web Lead @ Neurotech@Berkeley </p>
+                    <li> Manage website for Neurotech@Berkeley and work on software applications related to neuroscience and the brain. </li>
+                </ul>
+            </div>
+        </div>
 
-      <ul id="comment-container"></ul>
+        <div id = "comment-section" class = "panel">
+            
+            <form action="/data" method="POST">
+                <label for="comment">Enter a Comment:</label>
+                <input type="text" id = "comment" name = "comment">
+                <input type="submit" class = "submit-button"/>
+            </form>
+
+            <form>
+                <label for="comment">Select number of comments to display:</label>
+                <input type="number" name = "commentLimit" id = "commentLimit" min = "0" max = "100">
+                <input type="submit" class = "submit-button" onClick="loadComments(document.getElementById('commentLimit').value)"/>
+            </form>
+
+            <form action="/delete-data" method="POST">
+                <button name="delete" value="delete"> Delete all Comments </button>
+            </form>
+
+            <ul id="comment-container"></ul>
+        
+        </div>
+
+      </div>
 
     </div>
   </body>

@@ -1,34 +1,201 @@
 body {
+    background: #ffffff;
+    color: #646464;
     font-family: 'Open Sans';
+    font-size: 1.3vw;
+    margin: 0;
 }
 
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+#hero-section {
+    background: #F5F5F5;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100%;
 }
 
-#greeting-container, #fetch-container, #comment-container, .comment-item {
-  margin-top: 20px;
+#hero-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 2vw;
+    margin: 50px 50px 50px 150px;
+}
+
+#hero-img {
+    padding: 50px 0 50px 0;
+    position: relative;
+    height: 425 px;
+    width: 275 px;    
+}
+
+#profile-pic {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12),
+                0 2px 2px rgba(0, 0, 0, 0.12),
+                0 4px 4px rgba(0, 0, 0, 0.12),
+                0 8px 8px rgba(0, 0, 0, 0.12),
+                0 16px 16px rgba(0, 0, 0, 0.12);
+    height: 100%;
+    display: block;
+    margin: auto;
+    width: auto;
+}
+
+#one-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#one-page .panel:nth-child(odd) {
+    background: white;
+}
+
+#one-page .panel:nth-child(even) {
+    background: #F5F5F5;
+}
+
+.panel {
+    padding: 20px;
+}
+
+#greeting-section {
+    align-items: center;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
+    grid-template-areas: "greeting-text greeting-text greeting-button greeting-container";
+    justify-items: center;
+}
+
+#greeting-text {
+    grid-area: greeting-text;
+}
+
+#greeting-button {
+    grid-area: greeting-button;
+}
+
+#greeting-container {
+    grid-area: greeting-container;
+}
+
+#education-section {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+    grid-template-areas: "school coursework";
+    justify-content: space-between;
+}
+
+#school {
+    grid-area: school;
+}
+
+#coursework {
+    grid-area: coursework;
+}
+
+#activities-section {
+    align-items: center;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: repeat(2, 1fr);
+    grid-template-areas: "TA research"
+                         "csm web";
+    justify-content: space-between;
+}
+
+.activity {
+    display: flex;
+    flex-direction: column;
+}
+
+#TA {
+    grid-area: TA;
+}
+
+#research {
+    grid-area: research;
+}
+
+#csm {
+    grid-area: csm;
+}
+
+#web {
+    grid-area: web;
 }
 
 .comment-item {
-    border: thin solid black;
+    background: white;
+    border-radius: 2px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12),
+                0 2px 2px rgba(0, 0, 0, 0.12),
+                0 4px 4px rgba(0, 0, 0, 0.12),
+                0 8px 8px rgba(0, 0, 0, 0.12),
+                0 16px 16px rgba(0, 0, 0, 0.12);
+    margin: 5px;
+    padding: 5px;
 }
 
-#profile_pic {
-    height: auto;
-    max-width: 20%;
-    border-radius: 50%;
+button,
+.submit-button {
+    background-color: #ff6f61;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 1vw;
+    outline: none;
+    padding: 10px 20px 10px 20px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
 }
 
-#hero {
-    display: flex;
-    flex-direction: row;
+button:hover,
+.submit-button:hover {
+    background: #fa5443;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
 }
 
-#msg {
-    margin-top: auto;
-    margin-bottom: auto;
-    padding-left: 50px;
+ul {
+    list-style-type: none;
+}
+
+li {
+    margin: 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+li:before {
+  background-color: #ff6f61;
+  content: '';
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 6px;
+  width: 2px;
+}
+
+li:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  height: 10px;
+  width: 10px;
+}
+
+.title {
+    color: black;
+    font-weight: bold;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.accent {
+    color: #ff6f61;
 }
