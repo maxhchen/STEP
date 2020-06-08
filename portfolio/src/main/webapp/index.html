@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Live at maxwellchen-step-2020.appspot.com -->
     <meta charset="UTF-8">
     <title>Maxwell's Portfolio</title>
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
@@ -9,31 +10,86 @@
   </head>
 
 <!-- Whenever the HTML loads, renders all existing comments. -->
-  <body onload="loadComments()">
+  <body onload="loadCommentsOnStart()">
     <div id="content">
-      <h1>Maxwell's Portfolio</h1>
-      <div id = "hero">
-        <img id = "profile_pic" alt = "Photo of Maxwell" src = "/images/Maxwell.jpg">
-        <p id = "msg" >Hey! I'm Maxwell and I'm a rising junior at UC Berkeley studying Computer Science and Bioengineering. I love music, cooking, and teaching!</p>
+      
+      <div id = "hero-section">
+          <div id = "hero-text">
+              <h1> 👋 Hi! I'm <span class = "accent">Maxwell</span>. </h1>
+              <p id = "msg"> I'm a rising junior at UC Berkeley studying <span class = "accent">Computer Science and Bioengineering</span>. I love music, cooking, and teaching!</p>
+          </div>
+          <div id = "hero-img">
+            <img id = "profile-pic" alt = "Photo of Maxwell" src = "/images/Maxwell.jpg">
+          </div>
       </div>
 
-      <p>Click here to get a random greeting from around the world!:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+      <div id = "one-page">
+        <div id = "greeting-section" class = "panel">
+            <p id = "greeting-text"> Click here to get a random greeting from around the world! </p>
+            <button id = "greeting-button" onclick="addRandomGreeting()"> Hello </button>
+            <div id="greeting-container"> </div>
+        </div>
+
+        <div id = "education-section" class = "panel">
+            <div id = "school">
+                <dl> <dt class = "title"> University of California, Berkeley </dt>
+                    <dd> Computer Science B.A. </dd>
+                    <dd> Bioengineering minor </dd>
+                    <dd> Concentration in Computational Neuroscience</dd>
+                </dl>
+            </div>
+
+            <div id = "coursework">
+                <dl> <dt class = "title"> Coursework </dt>
+                    <dd> Data Structures and Algorithms </dd>
+                    <dd> Machine Architecture </li>
+                    <dd> Operating Systems and Systems Programming </dd>
+                    <dd> Discrete Mathematics and Probability Theory </dd>
+                    <dd> Advanced Probability and Random Processes </dd>
+                    <dd> Signals and Systems </dd>
+                    <dd> Teaching Techniques for Computer Science </dd>
+                </dl>
+            </div>
       
-      <p>Click here to say hello!:</p>
-      <button onclick="fetchMessage()">Fetch Message:</button>
-      <div id="fetch-container"></div>
+        </div>
 
-      <form action="/data" method="POST">
-        <label for="comment">Enter a Comment:</label>
-        <input type="text" id = "comment" name = "comment">
-        <br/><br/>
-        <input type="submit" />
-      </form>
- 
-      <ul id="comment-container"></ul>
+        <div id = "activities-section" class = "panel">
+            <dl id = "TA"> <dt class = "title">TA for EECS 16B </dt>
+                <dd> Manage logistics for assignments, exams, discussions, and grading for 500 students. Teach 20-30 students twice a week. </dd>
+            </dl>
+            <dl id = "research"> <dt class = "title"> Undergraduate Student Researcher </dt>
+                <dd> Develop software for biophysical simulations and predicting properties of neurons. </dd>
+            </dl>
+            <dl id = "csm"> <dt class = "title"> CSM Senior Mentor </dt>
+                <dd> Help junior mentors develop pedagogy and strengthen content knowledge. </dd>
+            </dl>
+            <dl id = "web"> <dt class = "title"> Web Lead @ Neurotech@Berkeley </dt>
+                <dd> Manage website for Neurotech@Berkeley and work on software applications related to neuroscience and the brain. </dd>
+            </dl>
+        </div>
 
+        <div id = "comment-section" class = "panel">
+            
+            <form action="/data" method="POST">
+                <label for="comment">Enter a Comment:</label>
+                <input type="text" id = "comment" name = "comment">
+                <input type="submit" class = "submit-button"/>
+            </form>
+
+            <form>
+                <label for="comment">Select number of comments to display:</label>
+                <input type="number" name = "commentLimit" id = "commentLimit" min = "0" max = "100">
+                <input type="submit" class = "submit-button" onClick="loadComments(document.getElementById('commentLimit').value)"/>
+            </form>
+
+            <form action="/delete-data" method="POST">
+                <button name="delete" value="delete"> Delete all Comments </button>
+            </form>
+
+            <ul id="comment-container"></ul>
+        
+        </div>
+      </div>
     </div>
   </body>
 </html>
