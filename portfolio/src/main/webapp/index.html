@@ -24,14 +24,12 @@
       <form action="/data" method="POST">
         <label for="comment">Enter a Comment:</label>
         <input type="text" id = "comment" name = "comment">
-        <br/><br/>
         <input type="submit" />
       </form>
       
       <form>
         <label for="comment">Select number of comments to display:</label>
         <input type="number" name = "commentLimit" id = "commentLimit" min = "0" max = "100">
-        <br/><br/>
         <input type="submit" onClick="loadComments(document.getElementById('commentLimit').value)"/>
       </form>
 
