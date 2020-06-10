@@ -51,16 +51,16 @@ function loadComments(commentLimit) {
     commentContainer.innerHTML = "";
 
     allComments.forEach(commentText => {
-      const commentItem = createCommentItem(commentText.text, commentText.timestamp);
+      const commentItem = createCommentItem(commentText.text, commentText.timestamp, commentText.email);
       commentContainer.appendChild(commentItem);
     });
   });
 }
 
 // Helper function to instantiate each comment.
-function createCommentItem(text, timestamp) {
+function createCommentItem(text, timestamp, email) {
   const commentItem = document.createElement('div');
-  commentItem.innerText = "\"" + text + "\" sent on " + timestamp;
+  commentItem.innerText = "\"" + text + "\" sent on " + timestamp + " by " + email;
   commentItem.className = "comment-item";
   return commentItem;
 }
