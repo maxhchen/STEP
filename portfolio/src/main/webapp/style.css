@@ -204,6 +204,6 @@ dd:after {
     color: #ff6f61;
 }
 
-.hidden {
+.active-on-login {
     display: none;
 }

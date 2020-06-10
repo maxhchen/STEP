@@ -70,7 +70,7 @@ function fetchLoginStatus() {
     fetch("/auth").then(response => response.json()).then(status => {
 
         if (status[0] == "true") {
-            const hiddenElements = document.getElementsByClassName('hidden');
+            const hiddenElements = document.getElementsByClassName('active-on-login');
             Array.from(hiddenElements).forEach(item => {
                 item.style.display = "block";
             });
