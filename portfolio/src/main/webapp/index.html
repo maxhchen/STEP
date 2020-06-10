@@ -10,7 +10,7 @@
   </head>
 
 <!-- Whenever the HTML loads, renders all existing comments. -->
-  <body onload="loadCommentsOnStart()">
+  <body onload="onLoad()">
     <div id="content">
       
       <div id = "hero-section">
@@ -70,23 +70,27 @@
 
         <div id = "comment-section" class = "panel">
 
-            <form action="/data" method="POST">
+            <a id = "status-link">
+                <button id = "status-button"> Login </button>
+            </a>
+
+            <form class = "active-on-login" action="/data" method="POST">
                 <label for="comment">Enter a Comment:</label>
                 <input type="text" id = "comment" name = "comment">
                 <input type="submit" class = "submit-button"/>
             </form>
 
-            <form>
-                <label for="comment">Select number of comments to display:</label>
+            <form class = "active-on-login">
+                <label for="commentLimit">Select number of comments to display:</label>
                 <input type="number" name = "commentLimit" id = "commentLimit" min = "0" max = "100">
                 <input type="submit" class = "submit-button" onClick="loadComments(document.getElementById('commentLimit').value)"/>
             </form>
 
-            <form action="/delete-data" method="POST">
+            <form class = "active-on-login" action="/delete-data" method="POST">
                 <button name="delete" value="delete"> Delete all Comments </button>
             </form>
 
-            <ul id="comment-container"></ul>
+            <ul class = "active-on-login" id="comment-container"></ul>
         
         </div>
 

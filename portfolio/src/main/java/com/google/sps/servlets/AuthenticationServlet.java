@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import java.util.*;
 
 /** Servlet for User Authentication. **/
@@ -36,20 +37,30 @@ import java.util.*;
 public class AuthenticationServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+        response.setContentType("application/json");
         UserService userService = UserServiceFactory.getUserService();
 
         if (userService.isUserLoggedIn()) {
-            String email = userService.getCurrentUser().getEmail();
-            String redirectUrl = "/";
-            String logoutUrl = userService.createLogoutURL(redirectUrl);
-            response.getWriter().println("Hello " + email);
-            response.getWriter().println("Logout <a href=\"" + logoutUrl + "\">here</a>");
+            // String email = userService.getCurrentUser().getEmail();
+            String logoutUrl = userService.createLogoutURL("/");
+            List<String> status = new ArrayList<>();
+            status.add("true");
+            status.add(logoutUrl);
+            response.getWriter().println(convertToJson(status));
 
         } else {
-            String redirectUrl = "/";
-            String loginUrl = userService.createLoginURL(redirectUrl);
-            response.getWriter().println("Login <a href=\"" + loginUrl + "\">here</a>");
+            String loginUrl = userService.createLoginURL("/");
+            List<String> status = new ArrayList<>();
+            status.add("false");
+            status.add(loginUrl);
+            response.getWriter().println(convertToJson(status));
         }
+    }
+    
+    // Convert List to JSON using Gson library.
+    private String convertToJson(List<String> response) {
+        Gson gson = new Gson();
+        String json = gson.toJson(response);
+        return json;
     }
 }

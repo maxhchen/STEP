@@ -51,31 +51,45 @@ function loadComments(commentLimit) {
     commentContainer.innerHTML = "";
 
     allComments.forEach(commentText => {
-      const commentItem = createCommentItem(commentText.text, commentText.timestamp);
+      const commentItem = createCommentItem(commentText.text, commentText.timestamp, commentText.email);
       commentContainer.appendChild(commentItem);
     });
   });
 }
 
 // Helper function to instantiate each comment.
-function createCommentItem(text, timestamp) {
+function createCommentItem(text, timestamp, email) {
   const commentItem = document.createElement('div');
-  commentItem.innerText = "\"" + text + "\" sent on " + timestamp;
+  commentItem.innerText = "\"" + text + "\" sent on " + timestamp + " by " + email;
   commentItem.className = "comment-item";
   return commentItem;
 }
 
-// const commentItem = document.createElement('div');
-//   commentItem.className = "comment-item";
-//   
-//   const commentText = document.createElement('div');
-//   commentText.innerText = text;
-//   commentText.className = "comment-text";
-//   
-//   const commentTimestamp = document.createElement('div');
-//   commentTimestamp.innerText = timestamp;
-//   commentTimestamp.className = "comment-timestamp";
-//   
-//   commentItem.appendChild(commentText);
-//   commentItem.appendChild(CommentTimestamp);
-//   return commentItem;
+// Get login status of user and either display hidden elements or display login form.
+function fetchLoginStatus() {
+    fetch("/auth").then(response => response.json()).then(status => {
+
+        if (status[0] == "true") {
+            const hiddenElements = document.getElementsByClassName('active-on-login');
+            Array.from(hiddenElements).forEach(item => {
+                item.style.display = "block";
+            });
+            const logoutLink = document.getElementById('status-link');
+            const logoutButton = document.getElementById('status-button');
+            logoutLink.href = status[1];
+            logoutButton.innerText = "Logout here";
+
+        } else {
+            const loginLink = document.getElementById('status-link');
+            const loginButton = document.getElementById('status-button');
+            loginLink.href = status[1];
+            loginButton.innerText = "Login here";
+        }
+    });
+}
+
+// Wrapper function to run multiple functions on page load.
+function onLoad() {
+    loadCommentsOnStart();
+    fetchLoginStatus();
+}

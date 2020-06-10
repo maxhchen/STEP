@@ -28,6 +28,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.classes.Comment;
 import com.google.gson.Gson;
 import java.util.*;
@@ -41,7 +44,7 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
     loadedComments = datastore.prepare(query);
 
     int commentLimit = getNumberOfCommentsToDisplay(request);
@@ -51,8 +54,9 @@ public class DataServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String text = (String) entity.getProperty("text");
       String timestamp = (String) entity.getProperty("timestamp");
+      String email = (String) entity.getProperty("email");
 
-      Comment comment = new Comment(id, text, timestamp);
+      Comment comment = new Comment(id, text, timestamp, email);
       comments.add(comment);
     }
 
@@ -64,11 +68,18 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String newCommentText = getComment(request);
+    UserService userService = UserServiceFactory.getUserService();
 
     if (newCommentText != null) {
         Entity commentEntity = new Entity("Comment");
         commentEntity.setProperty("text", newCommentText);
         commentEntity.setProperty("timestamp", getTimestamp());
+        if (userService.isUserLoggedIn()) {
+            commentEntity.setProperty("email", userService.getCurrentUser().getEmail());
+        } else {
+            commentEntity.setProperty("email", "guest");
+        }
+
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(commentEntity);
     }

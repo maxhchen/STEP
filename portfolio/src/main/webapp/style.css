@@ -203,3 +203,7 @@ dd:after {
 .accent {
     color: #ff6f61;
 }
+
+.active-on-login {
+    display: none;
+}

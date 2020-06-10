@@ -24,11 +24,13 @@ public class Comment {
     private long id;
     private String text;
     private String timestamp;
+    private String email;
 
-    public Comment(long id, String text, String timestamp) {
+    public Comment(long id, String text, String timestamp, String email) {
         this.id = id;
         this.text = text;
         this.timestamp = timestamp;
+        this.email = email;
     }
 
     /* Getter method for text. */
@@ -38,5 +40,9 @@ public class Comment {
     /* Getter method for timestamp. */
     public String getTimestamp() {
         return this.timestamp;
+    }
+    /* Getter method for email. */
+    public String getEmail() {
+        return this.email;
     }
 }
