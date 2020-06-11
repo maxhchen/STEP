@@ -28,7 +28,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.classes.Comment;
@@ -41,6 +43,7 @@ import java.text.*;
 public class DataServlet extends HttpServlet {
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   PreparedQuery loadedComments;
+  Translate translate = TranslateOptions.getDefaultInstance().getService();
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -52,11 +55,13 @@ public class DataServlet extends HttpServlet {
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : loadedComments.asList(FetchOptions.Builder.withLimit(commentLimit))) {
       long id = entity.getKey().getId();
-      String text = (String) entity.getProperty("text");
       String timestamp = (String) entity.getProperty("timestamp");
       String email = (String) entity.getProperty("email");
 
-      Comment comment = new Comment(id, text, timestamp, email);
+      String text = (String) entity.getProperty("text");
+      String translatedText = translateCommentText(request, text);
+
+      Comment comment = new Comment(id, translatedText, timestamp, email);
       comments.add(comment);
     }
 
@@ -111,7 +116,7 @@ public class DataServlet extends HttpServlet {
     int numComments;
 
     // Null or empty check.
-    if (requestValue == null || requestValue.isEmpty()) {
+    if ("null".equals(requestValue) || requestValue.isEmpty()) {
       numComments = loadedComments.countEntities();
       return numComments;
     }
@@ -127,10 +132,23 @@ public class DataServlet extends HttpServlet {
     return numComments;
   }
 
-    // Get formatted timestamp for current date and time.
-    private String getTimestamp() {
-        DateFormat timestamp = SimpleDateFormat.getDateTimeInstance();
-        return timestamp.format(Calendar.getInstance().getTime());
+  // Helper function that translates text to the desired language.
+  private String translateCommentText(HttpServletRequest request, String text) {
+    String languageCode = request.getParameter("languageCode");
 
+    // Null or empty check.
+    if ("null".equals(languageCode) || languageCode.isEmpty()) {
+      languageCode = "en";
     }
+
+    Translation translation = translate.translate(text, Translate.TranslateOption.targetLanguage(languageCode));
+    String translatedText = translation.getTranslatedText();
+    return translatedText;
+  }
+
+  // Get formatted timestamp for current date and time.
+  private String getTimestamp() {
+      DateFormat timestamp = SimpleDateFormat.getDateTimeInstance();
+      return timestamp.format(Calendar.getInstance().getTime());
+  }
 }

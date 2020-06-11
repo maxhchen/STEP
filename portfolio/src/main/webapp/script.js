@@ -38,12 +38,30 @@ function addRandomGreeting() {
 // Parses URL to determine number of comments to display.
 function loadCommentsOnStart() {
   let commentLimit = (new URL(document.location)).searchParams.get('commentLimit');
-  loadComments(commentLimit);
+  let languageCode = (new URL(document.location)).searchParams.get('languageCode');
+  loadComments(commentLimit, languageCode);
+}
+
+// Function to identify which language to translate comments to.
+function translateComments() {
+    const options = document.getElementsByName('languageCode');
+    var languageCode = "en";
+    
+    for (var i = 0; i < options.length; i++) {
+        if (options[i].checked) {
+            languageCode = options[i].value;
+            break;
+        }
+    }
+
+    let commentLimit = (new URL(document.location)).searchParams.get('commentLimit');
+    loadComments(commentLimit, languageCode);
 }
 
 // Load `commentLimit` comments.
-function loadComments(commentLimit) {
-    const URL = '/data?commentLimit=' + commentLimit;
+function loadComments(commentLimit, languageCode) {
+    const URL = '/data?commentLimit=' + commentLimit + '&languageCode=' + languageCode;
+    console.log(URL);
     fetch(URL).then(response => response.json()).then(allComments => {
     const commentContainer = document.getElementById('comment-container');
 
