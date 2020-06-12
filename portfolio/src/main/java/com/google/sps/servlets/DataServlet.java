@@ -117,7 +117,7 @@ public class DataServlet extends HttpServlet {
     int numComments;
 
     // Null or empty check.
-    if ("null".equals(requestValue) || requestValue.isEmpty()) {
+    if (requestValue == null || "null".equals(requestValue) || requestValue.isEmpty()) {
       numComments = loadedComments.countEntities();
       return numComments;
     }
@@ -138,7 +138,7 @@ public class DataServlet extends HttpServlet {
     String languageCode = request.getParameter("languageCode");
 
     // Null or empty check.
-    if ("null".equals(languageCode) || languageCode.isEmpty()) {
+    if (languageCode == null || "null".equals(languageCode) || languageCode.isEmpty()) {
       languageCode = "en";
     }
 
