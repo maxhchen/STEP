@@ -97,6 +97,9 @@ function fetchLoginStatus() {
             logoutLink.href = status[1];
             logoutButton.innerText = "Logout here";
 
+            const emailContainer = document.getElementById('email-container');
+            emailContainer.innerText = "Welcome " + status[2] + "!";
+
         } else {
             const loginLink = document.getElementById('status-link');
             const loginButton = document.getElementById('status-button');
@@ -106,8 +109,91 @@ function fetchLoginStatus() {
     });
 }
 
+// Loads Google Maps API.
+function createMap() {
+    const map = new google.maps.Map(document.getElementById('map-section'), {
+        center: {lat: 37.579869, lng: -122.121974},
+        zoom: 10,
+        styles: [
+                    {
+                        "featureType": "landscape.natural",
+                        "elementType": "geometry.fill",
+                        "stylers": [{"visibility": "on"}, {"color": "#e0efef"}]
+                    },
+                
+                    {
+                        "featureType": "poi",
+                        "elementType": "geometry.fill",
+                        "stylers": [{"visibility": "on"}, {"hue": "#1900ff"}, {"color": "#c0e8e8"}]
+                    },
+                
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry",
+                        "stylers": [{"lightness": 100}, {"visibility": "simplified"}]
+                    },
+                
+                    {
+                        "featureType": "road",
+                        "elementType": "labels",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                
+                    {
+                        "featureType": "transit.line",
+                        "elementType": "geometry",
+                        "stylers": [{"visibility": "on"}, {"lightness": 700}]
+                    },
+                
+                    {
+                        "featureType": "water",
+                        "elementType": "all",
+                        "stylers": [{"color": "#7dcdcd"}]
+                    }
+                ]
+    });
+    // Styling is licensed under Creative Commons from https://snazzymaps.com/style/61/blue-essence.
+
+  const homeMarker = new google.maps.Marker({
+      position: {lat: 37.217832, lng: -121.858269},
+      map: map,
+      title: 'Home'
+    });
+  
+  const freshmanMarker = new google.maps.Marker({
+      position: {lat: 37.866276, lng: -122.255204},
+      map: map,
+      title: 'Freshman Year'
+    });
+  
+  const sophomoreMarker = new google.maps.Marker({
+      position: {lat: 37.867764, lng: -122.261153},
+      map: map,
+      title: 'Sophomore Year'
+    });
+
+  const juniorMarker = new google.maps.Marker({
+      position: {lat: 37.867454, lng: -122.257261},
+      map: map,
+      title: 'Junior Year'
+    });
+
+  const schoolMarker = new google.maps.Marker({
+      position: {lat: 37.871967, lng: -122.258583},
+      map: map,
+      title: 'School'
+    });
+
+  const otherHomeMarker = new google.maps.Marker({
+      position: {lat: 25.034429, lng: 121.546511},
+      map: map,
+      title: 'Home away from Home'
+    });
+}
+
 // Wrapper function to run multiple functions on page load.
 function onLoad() {
     loadCommentsOnStart();
     fetchLoginStatus();
+    createMap();
 }
