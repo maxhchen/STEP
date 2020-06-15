@@ -6,6 +6,7 @@
     <title>Maxwell's Portfolio</title>
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
     <link rel="stylesheet" href="style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkRI9NS8BYMJ27BVfVwewD_GpIpIXjmv4"></script>
     <script src="script.js"></script>
   </head>
 
@@ -70,9 +71,12 @@
 
         <div id = "comment-section" class = "panel">
 
-            <a id = "status-link">
-                <button id = "status-button"> Login </button>
-            </a>
+            <div id = "login-status">
+                <a id = "status-link">
+                    <button id = "status-button"> Login </button>
+                </a>
+                <div id = "email-container"></div>
+            </div>
 
             <form class = "active-on-login" action="/data" method="POST">
                 <label for="comment">Enter a Comment:</label>
@@ -115,6 +119,8 @@
             <ul class = "active-on-login" id="comment-container"></ul>
         
         </div>
+
+        <div id = "map-section" class = "panel"> </div>
 
     </div>
   </body>

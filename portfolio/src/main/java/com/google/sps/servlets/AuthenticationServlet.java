@@ -34,11 +34,12 @@ public class AuthenticationServlet extends HttpServlet {
         UserService userService = UserServiceFactory.getUserService();
 
         if (userService.isUserLoggedIn()) {
-            // String email = userService.getCurrentUser().getEmail();
+            String email = userService.getCurrentUser().getEmail();
             String logoutUrl = userService.createLogoutURL("/");
             List<String> status = new ArrayList<>();
             status.add("true");
             status.add(logoutUrl);
+            status.add(email);
             response.getWriter().println(convertToJson(status));
 
         } else {

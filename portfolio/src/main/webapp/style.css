@@ -207,3 +207,13 @@ dd:after {
 .active-on-login {
     display: none;
 }
+
+#login-status {
+    display: flex;
+    justify-content: space-between;
+}
+
+#map-section {
+    margin: 50px;
+    height: 80vh;
+}
