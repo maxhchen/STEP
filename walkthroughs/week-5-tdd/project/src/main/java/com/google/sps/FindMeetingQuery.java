@@ -20,6 +20,8 @@ import java.util.*;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<TimeRange> results = new ArrayList<>();
+
+    List<Event> allEvents = new ArrayList(events);
     Collection<String> allAttendees = request.getAttendees();
     int numAttendees = allAttendees.size();
     long meetingTime = request.getDuration();
@@ -34,19 +36,27 @@ public final class FindMeetingQuery {
         return results;
     }
 
-    // Extract and sort event times (i.e. busy times) by start time.
-    List<TimeRange> timeRanges = new ArrayList<>();
-    for (Event e : events) {
-        // Ignore event times of people not actually attending.
-        boolean isOptional = isEventOptional(e, allAttendees);
-        if (!isOptional) {
-            timeRanges.add(e.getWhen());
+    // Remove events if the people attending them aren't actually looking
+    // to book a room.
+    Iterator<Event> iter = allEvents.iterator();
+
+    while (iter.hasNext()) {
+        Event e = iter.next();
+        if (eventAttendeeNotMeeting(e, allAttendees)) {
+            iter.remove();
         }
     }
-    timeRanges.sort(TimeRange.ORDER_BY_START);
 
+    // Sort Events by their start time.
+    Comparator<Event> EventStartComparator
+        = Comparator.comparing(Event::getWhen, (e1, e2) -> {
+            return Long.compare(e1.start(), e2.start());
+        });
+
+    Collections.sort(allEvents, EventStartComparator);
+    
     // Track latest end time of any event.
-    // Since timeRanges was sorted by start, the event with the latest end time
+    // Since eventTimes was sorted by start, the event with the latest end time
     // might come before the last event in the List (e.g. if we had [5, 20]
     // followed by [10, 15], we want to use [20, END_OF_DAY] for the final gap,
     // not [15, END_OF_DAY]).
@@ -54,26 +64,26 @@ public final class FindMeetingQuery {
     TimeRange gap;
 
     // Iteratively construct gaps between busy times.
-    for (int i = 0; i < timeRanges.size(); i++) {        
+    for (int i = 0; i < allEvents.size(); i++) {        
         // First gap before the first time anyone is busy.
         if (i == 0) {
-            gap = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, timeRanges.get(i).start(), false);
+            gap = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, allEvents.get(i).getWhen().start(), false);
         // gaps in the middle.
         } else {
-            gap = TimeRange.fromStartEnd(timeRanges.get(i-1).end(), timeRanges.get(i).start(), false);
+            gap = TimeRange.fromStartEnd(allEvents.get(i-1).getWhen().end(), allEvents.get(i).getWhen().start(), false);
         }
 
-        // Prevent edge behavior since start times are monotonically increasing,
-        // but end times are not.
+        // Validate gap.
         if (isValidGap(gap, meetingTime)) {
             results.add(gap);
         }
 
         // Update latest end time of any event.
-        if (i != timeRanges.size()) {
-            endOfLatestEvent = endOfLatestEvent > timeRanges.get(i).end() ? endOfLatestEvent : timeRanges.get(i).end();
+        if (i != allEvents.size()) {
+            endOfLatestEvent = endOfLatestEvent > allEvents.get(i).getWhen().end() ? endOfLatestEvent : allEvents.get(i).getWhen().end();
         }
     }
+    
     // Last gap after the last person is busy.
     gap = TimeRange.fromStartEnd(endOfLatestEvent, TimeRange.END_OF_DAY, true);
     if (isValidGap(gap, meetingTime)) {
@@ -86,16 +96,15 @@ public final class FindMeetingQuery {
 
   // Return `true` if a gap is "well-constructed" / valid:
   // 1) Start comes before end
-  // 3) gap is big enough to have meeting
+  // 2) gap is big enough to have meeting
   private boolean isValidGap(TimeRange gap, long meetingTime) {
     return gap.start() < gap.end()
         && gap.duration() >= meetingTime;
     }
 
-  // Return `true` if event is optional i.e. none of the required
-  // attendees must go to the event. This means that gaps can be scheduled
-  // during the event.
-  private boolean isEventOptional(Event e, Collection<String> allAttendees) {
+  // Return `true` if person attending the event isn't one of the people looking
+  // to book a meeting i.e. gaps can be scheduled during the event.
+  private boolean eventAttendeeNotMeeting(Event e, Collection<String> allAttendees) {
     Set<String> attendees = e.getAttendees();
     for (String s : attendees) {
         if (! allAttendees.contains(s)) {
