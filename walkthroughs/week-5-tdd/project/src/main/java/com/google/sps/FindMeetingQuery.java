@@ -24,10 +24,11 @@ public final class FindMeetingQuery {
     int numAttendees = allAttendees.size();
     long meetingTime = request.getDuration();
 
-    // Base Cases.
+    // Base Case: No required attendees.
     if (numAttendees == 0) {
         results = Arrays.asList(TimeRange.WHOLE_DAY);
         return results;
+    // Base Case: Invalid meeting time.
     } else if (meetingTime == 0 || meetingTime > TimeRange.WHOLE_DAY.duration()) {
         results = Arrays.asList();
         return results;
@@ -36,22 +37,12 @@ public final class FindMeetingQuery {
     // Extract and sort event times (i.e. busy times) by start time.
     List<TimeRange> timeRanges = new ArrayList<>();
     for (Event e : events) {
-
         // Ignore event times of people not actually attending.
-        Set<String> attendees = e.getAttendees();
-        boolean isOptional = false;
-        for (String s : attendees) {
-            if (! allAttendees.contains(s)) {
-                isOptional = true;
-                break;
-            }
-        }
-
+        boolean isOptional = isEventOptional(e, allAttendees);
         if (!isOptional) {
             timeRanges.add(e.getWhen());
         }
     }
-
     timeRanges.sort(TimeRange.ORDER_BY_START);
 
     // Track latest end time of any event.
@@ -74,8 +65,8 @@ public final class FindMeetingQuery {
 
         // Prevent edge behavior since start times are monotonically increasing,
         // but end times are not.
-        if (gap.start() < gap.end() && gap.start() != gap.end() && gap.duration() >= meetingTime ) {
-            results.add(gap);                
+        if (isValidGap(gap, meetingTime)) {
+            results.add(gap);
         }
 
         // Update latest end time of any event.
@@ -85,11 +76,32 @@ public final class FindMeetingQuery {
     }
     // Last gap after the last person is busy.
     gap = TimeRange.fromStartEnd(endOfLatestEvent, TimeRange.END_OF_DAY, true);
-    if (gap.start() < gap.end()) {
+    if (isValidGap(gap, meetingTime)) {
         results.add(gap);
     }
 
     return results;
 
+  }
+
+  // Return `true` if a gap is "well-constructed" / valid:
+  // 1) Start comes before end
+  // 3) gap is big enough to have meeting
+  private boolean isValidGap(TimeRange gap, long meetingTime) {
+    return gap.start() < gap.end()
+        && gap.duration() >= meetingTime;
+    }
+
+  // Return `true` if event is optional i.e. none of the required
+  // attendees must go to the event. This means that gaps can be scheduled
+  // during the event.
+  private boolean isEventOptional(Event e, Collection<String> allAttendees) {
+    Set<String> attendees = e.getAttendees();
+    for (String s : attendees) {
+        if (! allAttendees.contains(s)) {
+            return true;
+        }
+    }
+    return false;
   }
 }
