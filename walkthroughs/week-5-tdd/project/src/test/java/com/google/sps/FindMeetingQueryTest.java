@@ -270,5 +270,48 @@ public final class FindMeetingQueryTest {
 
     Assert.assertEquals(expected, actual);
   }
+
+  @Test
+  public void optionalAttendeeAllDay() {
+    // If we add an optional attendee C who has an all-day event, the same three time slots
+    // between attendees A and B should be returned, just as if attendee C was not invited.
+
+    // Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void optionalAttendeeEarly() {
+    // If we add an optional attendee C with an event between 8:30 and 9:00, only early and late
+    // time slots will be returned.
+
+    // Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void optionalAttendeeUnavailable() {
+    // If we add an optional attendee B with an event between 8:30 and 8:45,
+    // they will be ignored because considering their schedule means being unable
+    // to find a time slot big enough for the request time for everyone.
+
+    // Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void optionalAttendeeOnly() {
+    // Find gaps in the schedules of optional attendees (no mandatory attendees).
+
+    // Assert.assertEquals(expected, actual);
+    Assert.assertEquals(0, 1);
+  }
+
+  @Test
+  public void optionalAttendeeNoOverlap() {
+    // Optional attendees with no gaps; returns no time slot.
+    //
+    // Picture
+    // Assert.assertEquals(expected, actual);
+  }
+
+  
 }
 
